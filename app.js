@@ -12,8 +12,8 @@ let image3Img = document.getElementById("image3");
 function Image(name, imgSrc) {
     this.name = name;
     this.imgSrc = imgSrc;
-    this.views = 25;
-    this.clicks = 25;
+    this.views = 0;
+    this.clicks = 0;
 
     console.log(this);
 }
@@ -102,10 +102,10 @@ function setRandomImages() {
 }
 
 function handleImageClick(event) {
-
     event.preventDefault();
     let target = event.target;
     let imageName = target.alt;
+    console.log
 
     let theBestImage;
     for (let i = 0; i < imageArray.length; i++) {
@@ -113,6 +113,7 @@ function handleImageClick(event) {
         if (image.name === imageName) {
             theBestImage = image;
         }
+        // theBestImage.click++;
     }
 
     theBestImage.clicks++;
@@ -124,6 +125,17 @@ function handleImageClick(event) {
 
 viewArea.addEventListener("click", handleImageClick);
 
+let buttonListener = document.querySelector('button')
+
+function buttonHandler(event) {
+
+    event.preventDefault();
+    let target = event.target;
+    let imageName = target.alt;
+    console.log("clicked button");
+    for (let image of imageArray)
+        console.log(`${image.clicks} votes for ${image.name}`)
+}
 function renderResults() {
     console.log("clicked");
     for (let i = 0; i < imageArray.length; i++) {
@@ -131,16 +143,59 @@ function renderResults() {
         viewArea.innerHTML = "";
         let imageUL = document.createElement('ul');
         let image = imageArray[i];
-        let imageName = Image.name;
-        let goatVoteCount = Image.voteCount;
-        let report = "the image named ${imageName} got ${imageVotesCount} votes";
+        let imageName = image.name;
+        console.log(image);
+        let imageClickCount = image.clicks;
+        let report = `the image named ${imageName} got ${imageClickCount} clicks`;
         let imageLI = document.createElement("li");
         imageLI.textContent = report;
         imageUL.appendChild(imageLI);
         console.log(report);
+        viewArea.appendChild(imageUL);
     }
-    viewArea.appendChild(imageUL);
 }
+
+
 
 let showResultsButton = document.getElementById("show-results-button");
 showResultsButton.addEventListener("click", renderResults);
+
+function displayChart(data) {
+    let labels = getLabelData(data);
+    let votes = getVoteData(data)
+    let ctx = document.getElementById("chart-canvas");
+    let dataObj = {
+        type: "bar",
+        options: {
+            animation: true,
+        },
+        data: {
+            labels: ["image 1", "image 2"],
+            datasets: [
+                {
+                    label: "votes for images",
+                    data: [5, 10]
+                }
+            ]
+        }
+    }
+    let chart = new Chart(ctx, dataObj);
+}
+
+displayChart(imageArray);
+
+function getVoteData(imageArray) {
+    let votes = [];
+    for (let image of imageArray) {
+        votes.push(image.voteCount);
+    }
+    return votes
+}
+
+function getLabelData(imageArray) {
+    let labels = [];
+    for (let image of imageArray) {
+        labels.push(image.name);
+    }
+    return labels
+}
