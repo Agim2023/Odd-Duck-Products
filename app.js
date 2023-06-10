@@ -1,6 +1,6 @@
 'use strict'
 
-
+let voteLimit = 25;
 let viewArea = document.getElementById("view-area");
 let results = document.getElementById("results");
 
@@ -12,8 +12,8 @@ let image3Img = document.getElementById("image3");
 function Image(name, imgSrc) {
     this.name = name;
     this.imgSrc = imgSrc;
-    this.views = 0;
-    this.clicks = 0;
+    this.views = 25;
+    this.clicks = 25;
 
     console.log(this);
 }
@@ -44,24 +44,42 @@ let imageArray = [];
 imageArray.push(bagJ);
 imageArray.push(bananaJ);
 imageArray.push(bathRoom);
+imageArray.push(bootsJ);
+imageArray.push(breakFast);
+imageArray.push(bubbleGum);
+imageArray.push(chairJ);
+imageArray.push(cthulhuJ);
+imageArray.push(dogDuck);
+imageArray.push(dragonJ);
+imageArray.push(penJ);
+imageArray.push(petSweep);
+imageArray.push(scissors);
+imageArray.push(shark);
+imageArray.push(sweep);
+imageArray.push(tauntaun);
+imageArray.push(unicorn);
+imageArray.push(waterCan);
+imageArray.push(wineGlass)
 
 console.log(imageArray);
 
 
 
-function getRandomNumber() {
-    return Math.floor(Math.random() * Image.allImages.length);
+function getRandomInt() {
+    return Math.floor(Math.random() * imageArray.length);
 }
 
 function images(image1, image2, image3) {
     image1Img.src = image1.imgSrc;
     image1Img.alt = image1.name;
     image1Img.title = image1.name;
+
     image2Img.src = image2.imgSrc;
     image2Img.alt = image2.name;
     image2Img.title = image2.name;
+
     image3Img.src = image3.imgSrc;
-    image2Img.alt = image3.name;
+    image3Img.alt = image3.name;
     image3Img.title = image3.name;
 
     console.log(image1, image2, image3);
@@ -71,8 +89,20 @@ function images(image1, image2, image3) {
 
 images(bagJ, bananaJ, bathRoom);
 
-function handleGoatClick(event) {
-    ;
+function setRandomImages() {
+    let image1Index1 = getRandomInt(imageArray.length);
+    let image1Index2 = getRandomInt(imageArray.length);
+    if (image1Index1 === image1Index2) {
+        image1Index1 = getRandomInt(imageArray.length);
+        image1Index2 = getRandomInt(imageArray.length);
+    }
+
+    // let image1 = imageArray(image1Index1);
+    // let image2 = imageArray(image1Index2);
+}
+
+function handleImageClick(event) {
+
     event.preventDefault();
     let target = event.target;
     let imageName = target.alt;
@@ -89,6 +119,28 @@ function handleGoatClick(event) {
 
     console.log(imageName, theBestImage.clicks);
     console.log(theBestImage);
+    setRandomImages();
 }
 
-viewArea.addEventListener("click", handleGoatClick);
+viewArea.addEventListener("click", handleImageClick);
+
+function renderResults() {
+    console.log("clicked");
+    for (let i = 0; i < imageArray.length; i++) {
+        console.log("clicked button");
+        viewArea.innerHTML = "";
+        let imageUL = document.createElement('ul');
+        let image = imageArray[i];
+        let imageName = Image.name;
+        let goatVoteCount = Image.voteCount;
+        let report = "the image named ${imageName} got ${imageVotesCount} votes";
+        let imageLI = document.createElement("li");
+        imageLI.textContent = report;
+        imageUL.appendChild(imageLI);
+        console.log(report);
+    }
+    viewArea.appendChild(imageUL);
+}
+
+let showResultsButton = document.getElementById("show-results-button");
+showResultsButton.addEventListener("click", renderResults);

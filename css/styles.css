@@ -1,5 +1,6 @@
 body {
-  background-color: brown;
+  background-color: rgba(250, 210, 210, 0.418);
+  text-align: center;
 }
 
 img {
@@ -13,6 +14,28 @@ img {
 
 h1 {
   font-size: 60px;
-  color: white;
+  color: black;
   font-style: oblique;
+  text-align: center;
+  font-weight: bold;
+}
+
+/* main {
+  display: grid;
+  grid-template-columns: 1fr 200px;
+  grid-template-rows: 100px 1fr;
+} */
+
+#view-area {
+}
+
+#results {
+  grid-column: 2/3;
+  grid-row: 2/3;
+}
+
+#show-results-button {
+}
+
+button {
 }
