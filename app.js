@@ -69,37 +69,56 @@ function getRandomInt() {
     return Math.floor(Math.random() * imageArray.length);
 }
 
-function images(image1, image2, image3) {
-    image1Img.src = image1.imgSrc;
-    image1Img.alt = image1.name;
-    image1Img.title = image1.name;
+function setImages(prod1, prod2, prod3) {
+    console.log("setting images")
+    image1Img.src = prod1.imgSrc;
+    image1Img.alt = prod1.name;
+    image1Img.title = prod1.name;
 
-    image2Img.src = image2.imgSrc;
-    image2Img.alt = image2.name;
-    image2Img.title = image2.name;
+    image2Img.src = prod2.imgSrc;
+    image2Img.alt = prod2.name;
+    image2Img.title = prod2.name;
 
-    image3Img.src = image3.imgSrc;
-    image3Img.alt = image3.name;
-    image3Img.title = image3.name;
+    image3Img.src = prod3.imgSrc;
+    image3Img.alt = prod3.name;
+    image3Img.title = prod3.name;
 
-    console.log(image1, image2, image3);
+    console.log(prod1, prod2, prod3);
     console.log(image1Img, image2Img, image3Img);
 
 }
 
-images(bagJ, bananaJ, bathRoom);
+setImages(bagJ, bananaJ, bathRoom);
 
 function setRandomImages() {
-    let image1Index1 = getRandomInt(imageArray.length);
-    let image1Index2 = getRandomInt(imageArray.length);
-    if (image1Index1 === image1Index2) {
-        image1Index1 = getRandomInt(imageArray.length);
-        image1Index2 = getRandomInt(imageArray.length);
+    let imageIndex1 = getRandomInt(imageArray.length);
+    let imageIndex2 = getRandomInt(imageArray.length);
+    let imageIndex3 = getRandomInt(imageArray.length);
+    while (imageIndex1 === imageIndex2 || imageIndex2 === imageIndex3 || imageIndex2 === imageIndex3) {
+        imageIndex1 = getRandomInt(imageArray.length);
+        imageIndex2 = getRandomInt(imageArray.length);
+        imageIndex3 = getRandomInt(imageArray.length);
     }
+    imageIndex1 = getRandomInt(imageArray.length);
+    imageIndex2 = getRandomInt(imageArray.length);
+    imageIndex3 = getRandomInt(imageArray.length);
 
-    // let image1 = imageArray(image1Index1);
-    // let image2 = imageArray(image1Index2);
+    let Img1 = imageArray[imageIndex1];
+    let Img2 = imageArray[imageIndex2];
+    let Img3 = imageArray[imageIndex3];
+
+    setImages(Img1, Img2, Img3);
+    console.log(Img1, Img2, Img3);
+
+    // setImages(Img1, Img2, Img3);
+
+    console.log("setRandomImages");
 }
+
+setRandomImages();
+
+
+
 
 function handleImageClick(event) {
     event.preventDefault();
@@ -116,9 +135,9 @@ function handleImageClick(event) {
         // theBestImage.click++;
     }
 
-    theBestImage.clicks++;
+    theBestImage.click++;
 
-    console.log(imageName, theBestImage.clicks);
+    console.log(imageName, theBestImage.click);
     console.log(theBestImage);
     setRandomImages();
 }
@@ -136,12 +155,15 @@ function buttonHandler(event) {
     for (let image of imageArray)
         console.log(`${image.clicks} votes for ${image.name}`)
 }
-function renderResults() {
+function renderResults(event) {
+    event.preventDefault();
     console.log("clicked");
+    results.innerHTML = "";
+    let imageUL = document.createElement('ul');
     for (let i = 0; i < imageArray.length; i++) {
         console.log("clicked button");
-        viewArea.innerHTML = "";
-        let imageUL = document.createElement('ul');
+        // results.innerHTML = "";
+        // let imageUL = document.createElement('ul');
         let image = imageArray[i];
         let imageName = image.name;
         console.log(image);
@@ -151,8 +173,10 @@ function renderResults() {
         imageLI.textContent = report;
         imageUL.appendChild(imageLI);
         console.log(report);
-        viewArea.appendChild(imageUL);
+        // viewArea.appendChild(imageUL);
     }
+    results.appendChild(imageUL);
+    displayChart(imageArray);
 }
 
 
@@ -160,6 +184,7 @@ function renderResults() {
 let showResultsButton = document.getElementById("show-results-button");
 showResultsButton.addEventListener("click", renderResults);
 
+let chart;
 function displayChart(data) {
     let labels = getLabelData(data);
     let votes = getVoteData(data)
@@ -167,14 +192,14 @@ function displayChart(data) {
     let dataObj = {
         type: "bar",
         options: {
-            animation: true,
+            animation: false,
         },
         data: {
-            labels: ["image 1", "image 2"],
+            labels: labels,
             datasets: [
                 {
-                    label: "votes for images",
-                    data: [5, 10]
+                    label: "Votes For Images",
+                    data: [5, 10, 3, 6, 8, 12, 7, 5, 4, 6, , 8],
                 }
             ]
         }
